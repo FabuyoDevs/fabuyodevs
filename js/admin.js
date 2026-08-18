@@ -167,9 +167,20 @@ function showAuthError(msg) {
  * -------------------------------------------------------------------------- */
 
 /** Locked by default: dashboard only renders inside onAuthStateChanged. */
-function enterDashboard(user) {
+async function enterDashboard(user) {
+  try {
+    await user.getIdToken(true);
+  } catch (err) {
+    console.error("[Fabuyo Admin] Session verification failed:", err);
+    await signOut(auth);
+    return;
+  }
   authView.hidden = true;
+  authView.inert = true;
+  authView.setAttribute("aria-hidden", "true");
   dashView.hidden = false;
+  dashView.inert = false;
+  dashView.setAttribute("aria-hidden", "false");
   userEmail.textContent = user.email;
   userAvatar.textContent = (user.email || "A").charAt(0);
   subscribeProjects();
@@ -177,7 +188,14 @@ function enterDashboard(user) {
 
 function leaveDashboard() {
   dashView.hidden = true;
+  dashView.inert = true;
+  dashView.setAttribute("aria-hidden", "true");
   authView.hidden = false;
+  authView.inert = false;
+  authView.setAttribute("aria-hidden", "false");
+  projectOverlay.classList.remove("open");
+  confirmOverlay.classList.remove("open");
+  document.body.style.overflow = "";
   if (state.unsubscribe) { state.unsubscribe(); state.unsubscribe = null; }
   state.projects = [];
 }
@@ -189,7 +207,7 @@ function initAuth() {
     loginForm.querySelectorAll("input").forEach((i) => (i.disabled = true));
     return;
   }
-  onAuthStateChanged(auth, (user) => (user ? enterDashboard(user) : leaveDashboard()));
+  onAuthStateChanged(auth, (user) => (user ? void enterDashboard(user) : leaveDashboard()));
 }
 
 loginForm.addEventListener("submit", async (e) => {
@@ -222,18 +240,32 @@ loginForm.addEventListener("submit", async (e) => {
 });
 
 logoutBtn.addEventListener("click", async () => {
-  await signOut(auth);
-  toast("You have been signed out securely.", "info");
+  try {
+    await signOut(auth);
+    toast("You have been signed out securely.", "info");
+  } finally {
+    leaveDashboard();
+  }
 });
 
 /** Guard every write: never touch Firestore without a live session. */
-const requireSession = () => {
-  if (!auth?.currentUser) {
+const requireSession = async () => {
+  const user = auth?.currentUser;
+  if (!user) {
     toast("Session expired — please sign in again.", "error");
     leaveDashboard();
-    return false;
+    return null;
   }
-  return true;
+  try {
+    await user.getIdToken(true);
+    return user;
+  } catch (err) {
+    console.error("[Fabuyo Admin] Session refresh failed:", err);
+    await signOut(auth);
+    leaveDashboard();
+    toast("Session expired — please sign in again.", "error");
+    return null;
+  }
 };
 
 /* --------------------------------------------------------------------------
@@ -372,8 +404,8 @@ projCategory.innerHTML =
   `<option value="" disabled selected>Select a category…</option>` +
   CATEGORIES.map((c) => `<option value="${c}">${c}</option>`).join("");
 
-function openProjectModal(project = null) {
-  if (!requireSession()) return;
+async function openProjectModal(project = null) {
+  if (!(await requireSession())) return;
 
   state.editingId = project?.id ?? null;
   state.editingDraft = project ? { ...project } : null;
@@ -413,7 +445,7 @@ function closeProjectModalFn() {
   document.body.style.overflow = "";
 }
 
-newProjectBtn.addEventListener("click", () => openProjectModal());
+newProjectBtn.addEventListener("click", () => void openProjectModal());
 closeProjectModal.addEventListener("click", closeProjectModalFn);
 cancelProjectBtn.addEventListener("click", closeProjectModalFn);
 projectOverlay.addEventListener("click", (e) => {
@@ -604,7 +636,7 @@ function validateProjectForm() {
 
 projectForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  if (state.saving || !requireSession()) return;
+  if (state.saving || !(await requireSession())) return;
   clearErrors();
   if (!validateProjectForm()) return;
 
@@ -629,6 +661,7 @@ projectForm.addEventListener("submit", async (e) => {
     } else {
       await addDoc(collection(db, PROJECTS_COLLECTION), {
         ...payload,
+        published: state.editingDraft?.published ?? true,
         createdAt: serverTimestamp(),
       });
       toast("Project published to your live portfolio.", "success");
@@ -650,8 +683,8 @@ projectForm.addEventListener("submit", async (e) => {
 /* --------------------------------------------------------------------------
  * 9. DELETE — Firestore document only
  * -------------------------------------------------------------------------- */
-function openConfirm(project) {
-  if (!requireSession()) return;
+async function openConfirm(project) {
+  if (!(await requireSession())) return;
   state.deleteTarget = project;
   confirmTitle.textContent = project.title;
   confirmOverlay.classList.add("open");
@@ -673,7 +706,7 @@ confirmOverlay.addEventListener("click", (e) => {
 
 confirmDelete.addEventListener("click", async () => {
   const target = state.deleteTarget;
-  if (!target || !requireSession()) return;
+  if (!target || !(await requireSession())) return;
 
   const original = confirmDelete.innerHTML;
   confirmDelete.disabled = true;

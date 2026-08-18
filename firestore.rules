@@ -11,30 +11,33 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper: only an authenticated admin may write
+    // Firebase Auth is the admin boundary for this client-only portal.
     function isAdmin() {
       return request.auth != null;
     }
 
     // ---- Portfolio projects -------------------------------------------------
     match /projects/{projectId} {
-      allow read: if true;                    // public gallery fetches these
+      allow read: if isAdmin() || resource.data.published == true;
 
       allow create: if isAdmin()
         && request.resource.data.keys().hasAll(
-             ['title', 'category', 'description', 'liveUrl', 'imageUrl'])
+             ['title', 'category', 'description', 'liveUrl', 'imageUrl', 'published'])
+        && request.resource.data.published is bool
         && request.resource.data.title is string
         && request.resource.data.title.size() <= 90
         && request.resource.data.category in
              ['E-commerce', 'Corporate', 'Service', 'Creative']
         && request.resource.data.description is string
         && request.resource.data.description.size() <= 280
+        && request.resource.data.imageUrl is string
         && request.resource.data.liveUrl.matches('^https://.*');
 
       allow update: if isAdmin()
         && request.resource.data.diff(resource.data).changedKeys()
              .hasOnly(['title', 'category', 'description',
-                       'liveUrl', 'imageUrl', 'imagePath', 'updatedAt']);
+                       'liveUrl', 'imageUrl', 'imagePath', 'published', 'updatedAt'])
+        && request.resource.data.published is bool;
 
       allow delete: if isAdmin();
     }
@@ -51,10 +54,21 @@ service cloud.firestore {
            'message', 'status', 'createdAt'])
         && request.resource.data.name is string
         && request.resource.data.name.size() <= 120
+        && request.resource.data.email is string
         && request.resource.data.email.matches(
              '^[^@\\s]+@[^@\\s]+\\.[^@\\s]{2,}$')
         && request.resource.data.message is string
-        && request.resource.data.message.size() <= 2000;
+        && request.resource.data.message.size() <= 2000
+        && (!request.resource.data.keys().hasAny(['company'])
+          || request.resource.data.company is string)
+        && (!request.resource.data.keys().hasAny(['service'])
+          || request.resource.data.service is string)
+        && (!request.resource.data.keys().hasAny(['budget'])
+          || request.resource.data.budget is string)
+        && (!request.resource.data.keys().hasAny(['status'])
+          || request.resource.data.status == 'new')
+        && (!request.resource.data.keys().hasAny(['createdAt'])
+          || request.resource.data.createdAt is timestamp);
     }
 
     // Deny everything else by default

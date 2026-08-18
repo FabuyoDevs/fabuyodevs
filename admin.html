@@ -26,7 +26,7 @@
   <!-- ======================================================
        LOGIN VIEW — shown until onAuthStateChanged passes
        ====================================================== -->
-  <section class="auth-view" id="authView">
+  <section class="auth-view" id="authView" aria-hidden="false">
     <div class="orb orb-a" aria-hidden="true"></div>
     <div class="grid-bg" aria-hidden="true"></div>
 
@@ -72,7 +72,7 @@
   <!-- ======================================================
        DASHBOARD VIEW — hidden until a session is confirmed
        ====================================================== -->
-  <div id="dashView" hidden>
+  <div id="dashView" hidden inert aria-hidden="true">
 
     <!-- Top bar -->
     <header class="dash-top">

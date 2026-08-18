@@ -2,35 +2,30 @@
 # FABUYO — .gitignore
 # Static site (HTML/CSS/vanilla ES modules) + Firebase Hosting
 # --------------------------------------------------------------------------
-# IMPORTANT: js/firebase-config.js is intentionally NOT ignored.
-# Firebase *web* API keys are public identifiers, not secrets — every Firebase
-# web app ships one in its client bundle. Your real security boundary is
-# firestore.rules + Firebase Auth. Ignoring the config would break deploys,
-# since this project has no build step to inject environment variables.
-#
-# What IS dangerous: service-account / admin-SDK JSON keys. Those bypass all
-# security rules and grant full project access. They are ignored below.
+# Firebase configuration is generated during the Vercel build and must never
+# be committed. Service-account / admin-SDK files also grant full access.
 # ==========================================================================
 
 
 # ----- Secrets & credentials (NEVER commit) -------------------------------
+js/firebase-config.js
+.env
+.env.*
+
 # Firebase Admin SDK service accounts — full backend access, bypasses rules
 *serviceAccount*.json
 *service-account*.json
 *-firebase-adminsdk-*.json
 firebase-adminsdk*.json
+*secret*.json
+*credentials*.json
+*.key.json
 *.pem
 *.key
 *.p12
 *.p8
 *.keystore
 *.jks
-
-# Environment files
-.env
-.env.*
-!.env.example
-
 
 # ----- Firebase tooling ---------------------------------------------------
 .firebase/

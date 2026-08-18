@@ -26,6 +26,7 @@ import {
   addDoc,
   serverTimestamp,
   limit,
+  where,
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 /* --------------------------------------------------------------------------
@@ -249,6 +250,7 @@ async function loadProjects() {
   try {
     const q = query(
       collection(db, PROJECTS_COLLECTION),
+      where("published", "==", true),
       orderBy("createdAt", "desc"),
       limit(48)
     );

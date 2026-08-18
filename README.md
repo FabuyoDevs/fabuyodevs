@@ -2,7 +2,7 @@
 
 A dark, high-contrast, fully responsive agency site with a hidden, Firebase-secured
 admin console. Built with **pure HTML5, CSS3 (variables/flex/grid) and vanilla ES6+
-modules** — no build step, no frameworks.
+modules** — no framework runtime.
 
 ```
 /
@@ -13,9 +13,9 @@ modules** — no build step, no frameworks.
 ├── css/
 │   └── style.css       # Unified design system (CSS variables)
 └── js/
-    ├── firebase-config.js  # Firebase init + your credentials (paste here)
-    ├── app.js              # Public gallery, filters, contact form
-    └── admin.js            # Auth guard, uploads, CRUD logic
+    ├── firebase-config.example.js  # Safe placeholder reference
+    ├── app.js                       # Public gallery, filters, contact form
+    └── admin.js                     # Auth guard, uploads, CRUD logic
 ```
 
 ---
@@ -104,8 +104,11 @@ Paste each file into the matching **Rules** tab in the Firebase console
 ## 4. Setup checklist (5 minutes)
 
 1. **Create a project** at <https://console.firebase.google.com> → *Add project*.
-2. **Add a Web App** (`</>` icon) and copy the `firebaseConfig` object.
-3. **Paste credentials** into `js/firebase-config.js`, replacing every `PASTE_*` value.
+2. **Add a Web App** (`</>` icon) and copy the Firebase web configuration values.
+3. **Add these Vercel Environment Variables**: `FIREBASE_API_KEY`,
+   `FIREBASE_AUTH_DOMAIN`, `FIREBASE_PROJECT_ID`, `FIREBASE_STORAGE_BUCKET`,
+   `FIREBASE_MESSAGING_SENDER_ID`, `FIREBASE_APP_ID`, and optionally
+   `FIREBASE_MEASUREMENT_ID`.
 4. **Enable auth**: Authentication → Sign-in method → **Email/Password** → Enable.
 5. **Create your admin user**: Authentication → Users → *Add user*.
 6. **Create databases**: Firestore Database → *Start in production mode*;
@@ -113,8 +116,8 @@ Paste each file into the matching **Rules** tab in the Firebase console
 7. **Publish rules**: paste `firestore.rules` and `storage.rules` (above).
 8. Done — visit `/admin`, sign in, publish your first project.
 
-> Until step 3 is done the **public** site runs in demo mode with sample
-> portfolio data, so nothing ever looks broken in front of a client.
+> The build generates `js/firebase-config.js` from Vercel variables. That file
+> is ignored by Git; use `js/firebase-config.example.js` for local reference.
 
 ---
 
