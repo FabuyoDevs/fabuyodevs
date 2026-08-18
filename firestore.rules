@@ -1,0 +1,65 @@
+rules_version = '2';
+
+// ============================================================================
+// FABUYO — Cloud Firestore Security Rules
+// ----------------------------------------------------------------------------
+// projects    → world-readable (public portfolio), write = signed-in admin only
+// inquiries   → anyone may CREATE a lead (contact form), everything else is
+//               restricted to the signed-in admin
+// Deploy: Firebase Console → Firestore Database → Rules → paste → Publish
+// ============================================================================
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: only an authenticated admin may write
+    function isAdmin() {
+      return request.auth != null;
+    }
+
+    // ---- Portfolio projects -------------------------------------------------
+    match /projects/{projectId} {
+      allow read: if true;                    // public gallery fetches these
+
+      allow create: if isAdmin()
+        && request.resource.data.keys().hasAll(
+             ['title', 'category', 'description', 'liveUrl', 'imageUrl'])
+        && request.resource.data.title is string
+        && request.resource.data.title.size() <= 90
+        && request.resource.data.category in
+             ['E-commerce', 'Corporate', 'Service', 'Creative']
+        && request.resource.data.description is string
+        && request.resource.data.description.size() <= 280
+        && request.resource.data.liveUrl.matches('^https://.*');
+
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).changedKeys()
+             .hasOnly(['title', 'category', 'description',
+                       'liveUrl', 'imageUrl', 'imagePath', 'updatedAt']);
+
+      allow delete: if isAdmin();
+    }
+
+    // ---- Contact-form leads --------------------------------------------------
+    match /inquiries/{inquiryId} {
+      allow get, list: if isAdmin();          // only the owner reads leads
+      allow update, delete: if isAdmin();
+
+      // Public may only CREATE a well-formed lead — never read them back
+      allow create: if
+        request.resource.data.keys().hasOnly(
+          ['name', 'email', 'company', 'service', 'budget',
+           'message', 'status', 'createdAt'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() <= 120
+        && request.resource.data.email.matches(
+             '^[^@\\s]+@[^@\\s]+\\.[^@\\s]{2,}$')
+        && request.resource.data.message is string
+        && request.resource.data.message.size() <= 2000;
+    }
+
+    // Deny everything else by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

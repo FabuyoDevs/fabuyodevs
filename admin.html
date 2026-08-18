@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Private portal: never indexed, never linked from the public site -->
+  <title>Fabuyo — Console</title>
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="theme-color" content="#07080b" />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f1218' stroke='%23d5ff4f' stroke-width='3'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='38' font-weight='700' text-anchor='middle' fill='%23d5ff4f'%3EF%3C/text%3E%3C/svg%3E" />
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Styling: Tailwind (utilities) + Fabuyo design system -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="admin-body">
+
+  <!-- ======================================================
+       LOGIN VIEW — shown until onAuthStateChanged passes
+       ====================================================== -->
+  <section class="auth-view" id="authView">
+    <div class="orb orb-a" aria-hidden="true"></div>
+    <div class="grid-bg" aria-hidden="true"></div>
+
+    <div class="auth-card">
+      <div class="brand-mini">
+        <a class="brand" href="index.html">Fabuyo<span>.</span></a>
+        <span class="lock-box"><i data-lucide="shield-check"></i></span>
+      </div>
+
+      <h1>Owner console</h1>
+      <p>Restricted area. Sign in with your Fabuyo admin credentials to manage the live portfolio.</p>
+
+      <div class="auth-error" id="authError" role="alert">
+        <i data-lucide="alert-triangle"></i><span>Authentication failed.</span>
+      </div>
+
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="loginEmail">Admin email</label>
+          <input id="loginEmail" type="email" placeholder="owner@fabuyo.dev" autocomplete="username" />
+        </div>
+        <div class="field">
+          <label for="loginPass">Password</label>
+          <input id="loginPass" type="password" placeholder="••••••••••••" autocomplete="current-password" />
+        </div>
+        <button type="submit" class="btn btn-primary" id="loginBtn" style="width:100%">
+          Sign in securely <i data-lucide="lock"></i>
+        </button>
+      </form>
+
+      <!-- Setup hint only appears while js/firebase-config.js holds placeholders -->
+      <div class="setup-note" id="setupNote" hidden>
+        <b>Setup required:</b> paste your Firebase credentials into
+        <code>js/firebase-config.js</code>, then enable
+        <b>Email/Password</b> authentication and create your admin user in the
+        Firebase console. Full checklist lives in <code>README.md</code>.
+      </div>
+
+      <p class="auth-foot">Protected by Firebase Authentication · <a href="index.html">← back to fabuyo.dev</a></p>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       DASHBOARD VIEW — hidden until a session is confirmed
+       ====================================================== -->
+  <div id="dashView" hidden>
+
+    <!-- Top bar -->
+    <header class="dash-top">
+      <div class="container dash-top-inner">
+        <a class="brand" href="index.html">Fabuyo<span>.</span></a>
+        <div class="dash-top-right">
+          <div class="user-chip">
+            <span class="avatar" id="userAvatar">A</span>
+            <span id="userEmail">admin@fabuyo.dev</span>
+          </div>
+          <button class="btn btn-ghost btn-sm" id="logoutBtn">
+            <i data-lucide="log-out"></i> Log out
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="dash-main container">
+      <div class="dash-head">
+        <span class="eyebrow">Portfolio management</span>
+        <h1>Your project library</h1>
+        <p>Everything you publish here appears instantly on the live site. Changes are realtime.</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="wi"><i data-lucide="layers"></i></span>
+          <div><b id="statTotal">0</b><span>Total projects</span></div>
+        </div>
+        <div class="stat-card">
+          <span class="wi"><i data-lucide="tags"></i></span>
+          <div><b id="statCats">0</b><span>Categories used</span></div>
+        </div>
+        <div class="stat-card">
+          <span class="wi"><i data-lucide="calendar-clock"></i></span>
+          <div><b id="statLatest">—</b><span>Latest publish</span></div>
+        </div>
+        <div class="stat-card">
+          <span class="wi"><i data-lucide="cloud"></i></span>
+          <div><b>Live</b><span>Firestore sync</span></div>
+        </div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="dash-toolbar">
+        <h2>Projects <span class="count-pill" id="tableCount">0 / 0</span></h2>
+        <div class="toolbar-actions">
+          <label class="search-box" style="min-width:min(260px,100%)">
+            <i data-lucide="search"></i>
+            <input type="search" id="tableSearch" placeholder="Filter by title or tag…" aria-label="Filter projects" />
+          </label>
+          <button class="btn btn-primary btn-sm" id="newProjectBtn">
+            <i data-lucide="plus"></i> New project
+          </button>
+        </div>
+      </div>
+
+      <!-- Projects table -->
+      <div class="proj-table-wrap">
+        <table class="proj-table">
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>Category</th>
+              <th>Live URL</th>
+              <th>Published</th>
+              <th style="text-align:right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"><!-- populated by js/admin.js --></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <!-- ======================================================
+       PROJECT MODAL — create / edit
+       ====================================================== -->
+  <div class="modal-overlay" id="projectOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 id="modalTitle">New project</h3>
+        <button class="icon-btn" id="closeProjectModal" aria-label="Close"><i data-lucide="x"></i></button>
+      </div>
+
+      <form id="projectForm" novalidate>
+        <div class="modal-body">
+          <input type="hidden" id="projId" />
+
+          <div class="form-row">
+            <div class="field">
+              <label for="projTitle">Project title <i>*</i></label>
+              <input id="projTitle" type="text" placeholder="Aurora Boutique — Online Store" maxlength="90" />
+              <span class="error-text"></span>
+            </div>
+            <div class="field">
+              <label for="projCategory">Category tag <i>*</i></label>
+              <select id="projCategory"></select>
+              <span class="error-text"></span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="projDesc">Description <i>*</i></label>
+            <textarea id="projDesc" placeholder="One or two sentences about the client, the challenge and the outcome…" maxlength="280" style="min-height:96px"></textarea>
+            <span class="error-text"></span>
+          </div>
+
+          <div class="field">
+            <label for="projUrl">Live demo URL <i>*</i></label>
+            <input id="projUrl" type="url" placeholder="https://client-site.com" inputmode="url" />
+            <span class="error-text"></span>
+          </div>
+
+          <div class="field">
+            <label for="projImage">Screenshot image URL <i>*</i></label>
+            <input id="projImage" type="text" placeholder="https://images.pexels.com/photos/…/photo.jpeg" inputmode="url" />
+            <span class="error-text"></span>
+          </div>
+
+          <div class="field">
+            <label>Or convert a local file into a stored link</label>
+            <div class="dropzone" id="dropzone">
+              <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" aria-label="Convert a screenshot into a stored link" />
+              <div id="dzPrompt">
+                <i data-lucide="image-plus"></i>
+                <p>Drop a screenshot, or click to browse</p>
+                <small>We'll compress it and save it as a link in Firestore — no Storage bucket needed.</small>
+              </div>
+            </div>
+            <div class="dz-preview" id="dzPreview" hidden>
+              <img id="dzPreviewImg" alt="Screenshot preview" />
+              <button type="button" class="dz-remove" id="dzRemove" aria-label="Remove image"><i data-lucide="x"></i></button>
+            </div>
+            <div id="progressWrap" hidden>
+              <div class="progress"><i id="progressBar"></i></div>
+              <span class="progress-label" id="progressLabel">Converting…</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-foot">
+          <button type="button" class="btn btn-ghost btn-sm" id="cancelProjectBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm" id="saveBtn">
+            <span id="saveBtnLabel">Publish project</span> <i data-lucide="cloud-upload"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       CONFIRM DELETE MODAL
+       ====================================================== -->
+  <div class="modal-overlay" id="confirmOverlay" role="alertdialog" aria-modal="true">
+    <div class="modal modal-sm">
+      <div class="modal-head">
+        <h3>Delete project?</h3>
+        <button class="icon-btn" id="closeConfirmModal" aria-label="Close"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="confirm-icon"><i data-lucide="trash-2"></i></div>
+        <p class="confirm-copy">
+          <b id="confirmTitle">Project</b> will be permanently removed from Firestore.
+          This action cannot be undone.
+        </p>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-ghost btn-sm" id="confirmCancel">Keep project</button>
+        <button class="btn btn-danger btn-sm" id="confirmDelete"><i data-lucide="trash-2"></i> Delete permanently</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div class="toast-wrap" id="toasts" aria-live="polite"></div>
+
+  <!-- Icons + admin application logic -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

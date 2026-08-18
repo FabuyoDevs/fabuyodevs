@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fabuyo — Web Development Agency for Growing Businesses</title>
+  <meta name="description" content="Fabuyo designs and builds fast, secure, search-ready websites that help business owners establish online accessibility, streamline communication and share information effectively." />
+  <meta name="theme-color" content="#07080b" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Fabuyo — Web Development Agency" />
+  <meta property="og:description" content="Websites that turn clicks into clients. Custom development, business digitizing, communication integration, SEO & performance." />
+  <meta property="og:type" content="website" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23d5ff4f'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='38' font-weight='700' text-anchor='middle' fill='%230a0c07'%3EF%3C/text%3E%3C/svg%3E" />
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet" />
+
+  <!-- Styling: Tailwind (utilities) + Fabuyo design system -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Structured data for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Fabuyo",
+    "description": "Web development agency helping business owners establish online accessibility, streamline communication and share information effectively.",
+    "email": "hello@fabuyo.dev",
+    "knowsAbout": ["Web Development", "SEO", "Business Digitizing", "Communication Integration"]
+  }
+  </script>
+</head>
+
+<body>
+
+  <!-- ======================= HEADER ======================= -->
+  <header class="site-header" id="siteHeader">
+    <div class="container nav">
+      <a href="#top" class="brand">Fabuyo<span>.</span></a>
+
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#process">Process</a>
+        <a href="#why">Why Fabuyo</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="nav-cta">
+        <a href="#contact" class="btn btn-primary btn-sm">Start a project</a>
+        <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+          <i></i><i></i><i></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile overlay menu -->
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile">
+    <a href="#services">Services</a>
+    <a href="#work">Work</a>
+    <a href="#process">Process</a>
+    <a href="#why">Why Fabuyo</a>
+    <a href="#contact">Contact</a>
+    <a href="#contact" class="btn btn-primary">Start a project <i data-lucide="arrow-right"></i></a>
+  </nav>
+
+  <main id="top">
+
+    <!-- ======================= HERO ======================= -->
+    <section class="hero">
+      <div class="grid-bg" aria-hidden="true"></div>
+      <div class="orb orb-a" aria-hidden="true"></div>
+      <div class="orb orb-b" aria-hidden="true"></div>
+
+      <div class="container hero-inner">
+        <div>
+          <span class="eyebrow reveal">Web development agency</span>
+
+          <h1 class="hero-title reveal" style="--d:.08s">
+            Grow your business with a website that <em>actually works.</em>
+          </h1>
+
+          <p class="hero-sub reveal" style="--d:.16s">
+            Fabuyo designs and builds fast, secure, search-ready websites for business
+            owners — complete with the tools to capture leads, streamline
+            communication and share what matters, beautifully.
+          </p>
+
+          <div class="hero-cta reveal" style="--d:.24s">
+            <a href="#contact" class="btn btn-primary">Start a project <i data-lucide="arrow-right"></i></a>
+            <a href="#work" class="btn btn-ghost">Explore our work <i data-lucide="arrow-down-right"></i></a>
+          </div>
+
+          <div class="hero-stats reveal" style="--d:.32s">
+            <div class="stat"><b><span data-count="60">0</span><i>+</i></b><span>Projects shipped</span></div>
+            <div class="stat"><b><span data-count="98">0</span><i>/100</i></b><span>Avg. Lighthouse score</span></div>
+            <div class="stat"><b><span data-count="4.9">0</span><i>/5</i></b><span>Client rating</span></div>
+            <div class="stat"><b><i>&lt;</i><span data-count="24">0</span><i>h</i></b><span>Response time</span></div>
+          </div>
+        </div>
+
+        <!-- Floating visual composition (parallax layers) -->
+        <div class="hv-stage" id="hvStage" aria-hidden="true">
+          <div class="hv-card one" data-depth="0.5">
+            <img src="https://images.pexels.com/photos/8311880/pexels-photo-8311880.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" loading="eager" />
+          </div>
+          <div class="hv-card two" data-depth="0.9">
+            <img src="https://images.pexels.com/photos/1313534/pexels-photo-1313534.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" loading="lazy" />
+          </div>
+          <div class="hv-card three" data-depth="0.7">
+            <img src="https://images.pexels.com/photos/20043053/pexels-photo-20043053.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" loading="lazy" />
+          </div>
+
+          <div class="hv-chip a" data-depth="1.2">
+            <span class="chip-icon"><i data-lucide="trending-up"></i></span>
+            <div><b>+212%</b><small>Avg. inquiry growth</small></div>
+          </div>
+          <div class="hv-chip b" data-depth="1.4">
+            <span class="chip-icon"><i data-lucide="gauge"></i></span>
+            <div><b>0.8s load</b><small>Core Web Vitals: green</small></div>
+          </div>
+          <div class="hv-chip c" data-depth="1.1">
+            <span class="chip-icon"><i data-lucide="shield-check"></i></span>
+            <div><b>Secure by default</b><small>HTTPS · Hardened forms</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= MARQUEE ======================= -->
+    <div class="marquee" aria-hidden="true">
+      <div class="mq-track">
+        <span class="mq-item">Web Development</span>
+        <span class="mq-item">E-commerce</span>
+        <span class="mq-item">Business Digitizing</span>
+        <span class="mq-item">SEO &amp; Performance</span>
+        <span class="mq-item">Communication Tools</span>
+        <span class="mq-item">Hosting &amp; Care</span>
+        <!-- duplicate loop for seamless marquee -->
+        <span class="mq-item">Web Development</span>
+        <span class="mq-item">E-commerce</span>
+        <span class="mq-item">Business Digitizing</span>
+        <span class="mq-item">SEO &amp; Performance</span>
+        <span class="mq-item">Communication Tools</span>
+        <span class="mq-item">Hosting &amp; Care</span>
+      </div>
+    </div>
+
+    <!-- ======================= SERVICES ======================= -->
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">What we do</span>
+          <h2>Everything your business needs to thrive <em>online.</em></h2>
+          <p>Four core services, one obsessive standard of quality. No bloated page builders, no templates — just clean engineering that pays for itself.</p>
+        </div>
+
+        <div class="services-grid">
+          <article class="service-card reveal" style="--d:.05s">
+            <div class="service-top">
+              <span class="service-num">/ 01</span>
+              <span class="icon-box"><i data-lucide="code-2"></i></span>
+            </div>
+            <h3>Custom Web Development</h3>
+            <p>Hand-coded, blazing-fast websites built around your brand and your customers — accessible, responsive and effortless to maintain.</p>
+            <div class="service-tags"><span>HTML / CSS / JS</span><span>CMS</span><span>E-commerce</span></div>
+          </article>
+
+          <article class="service-card reveal" style="--d:.12s">
+            <div class="service-top">
+              <span class="service-num">/ 02</span>
+              <span class="icon-box"><i data-lucide="store"></i></span>
+            </div>
+            <h3>Business Digitizing</h3>
+            <p>From paper to platform: online bookings, digital menus &amp; catalogs, invoicing and customer portals that run your business while you sleep.</p>
+            <div class="service-tags"><span>Bookings</span><span>Catalogs</span><span>Payments</span></div>
+          </article>
+
+          <article class="service-card reveal" style="--d:.05s">
+            <div class="service-top">
+              <span class="service-num">/ 03</span>
+              <span class="icon-box"><i data-lucide="messages-square"></i></span>
+            </div>
+            <h3>Communication Integration</h3>
+            <p>Contact forms that never miss, CRM hookups, WhatsApp &amp; email automation — so every inquiry lands exactly where it should, instantly.</p>
+            <div class="service-tags"><span>CRM</span><span>Automation</span><span>Lead capture</span></div>
+          </article>
+
+          <article class="service-card reveal" style="--d:.12s">
+            <div class="service-top">
+              <span class="service-num">/ 04</span>
+              <span class="icon-box"><i data-lucide="gauge"></i></span>
+            </div>
+            <h3>SEO &amp; Performance</h3>
+            <p>Core Web Vitals in the green, structured data, technical SEO and analytics that tell you what is working — in plain language.</p>
+            <div class="service-tags"><span>Technical SEO</span><span>Analytics</span><span>CWV</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= WORK / PORTFOLIO ======================= -->
+    <section class="section work-section" id="work">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Selected work</span>
+          <h2>A portfolio that <em>proves</em> the promise.</h2>
+          <p>Real projects, live on the web. Every card below is served straight from our project library — search it, filter it, visit it.</p>
+        </div>
+
+        <div class="work-toolbar reveal">
+          <div class="filters" id="filterBar" role="group" aria-label="Filter projects by category"></div>
+          <label class="search-box">
+            <i data-lucide="search"></i>
+            <input type="search" id="searchInput" placeholder="Search projects by title…" aria-label="Search projects by title" />
+          </label>
+        </div>
+
+        <!-- Demo-mode note (only visible before Firebase is connected) -->
+        <p id="workNote" hidden style="color:var(--faint);font-size:.82rem;margin-bottom:1.4rem;display:flex;align-items:center;gap:.5rem;">
+          Demo mode — connect Firebase to serve your live portfolio.
+        </p>
+
+        <div class="work-grid" id="workGrid" aria-live="polite"><!-- populated by js/app.js --></div>
+      </div>
+    </section>
+
+    <!-- ======================= PROCESS ======================= -->
+    <section class="section" id="process">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">How we work</span>
+          <h2>From first call to launch day in four <em>clear</em> steps.</h2>
+          <p>A transparent process with fixed milestones. You always know what is happening, when, and why.</p>
+        </div>
+
+        <div class="process-grid">
+          <div class="step-card reveal" style="--d:.02s">
+            <div class="step-num">01</div>
+            <h3>Discover</h3>
+            <p>A focused strategy call. We map your goals, audience and content — then quote a fixed price, no surprises.</p>
+          </div>
+          <div class="step-card reveal" style="--d:.08s">
+            <div class="step-num">02</div>
+            <h3>Design</h3>
+            <p>Wireframes become a pixel-perfect design system. You review every screen before a single line ships.</p>
+          </div>
+          <div class="step-card reveal" style="--d:.14s">
+            <div class="step-num">03</div>
+            <h3>Build</h3>
+            <p>Clean, accessible code with weekly progress links. Tested across devices, browsers and screen readers.</p>
+          </div>
+          <div class="step-card reveal" style="--d:.2s">
+            <div class="step-num">04</div>
+            <h3>Launch &amp; Grow</h3>
+            <p>DNS, SSL, analytics and search-console setup — then ongoing care plans to keep you fast and secure.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= WHY FABUYO ======================= -->
+    <section class="section" id="why" style="padding-top:0">
+      <div class="container why-grid">
+        <div class="reveal">
+          <span class="eyebrow">Why Fabuyo</span>
+          <h2 class="why-title">Built like a product team. <em>Priced for small business.</em></h2>
+          <p class="why-copy">Agencies often sell you reach; we sell you reliability. Every Fabuyo site ships with the same engineering discipline we would want for our own company.</p>
+        </div>
+
+        <ul class="why-list">
+          <li class="reveal" style="--d:.05s">
+            <span class="wi"><i data-lucide="file-code-2"></i></span>
+            <div><b>100% ownership</b><p>Your domain, your code, your data. Leave anytime — nothing is held hostage.</p></div>
+          </li>
+          <li class="reveal" style="--d:.1s">
+            <span class="wi"><i data-lucide="shield-check"></i></span>
+            <div><b>Secure by default</b><p>HTTPS everywhere, hardened forms, spam filtering and least-privilege access.</p></div>
+          </li>
+          <li class="reveal" style="--d:.15s">
+            <span class="wi"><i data-lucide="zap"></i></span>
+            <div><b>Fast, measurably</b><p>Sub-second loads and green Core Web Vitals — verified in your monthly report.</p></div>
+          </li>
+          <li class="reveal" style="--d:.2s">
+            <span class="wi"><i data-lucide="heart-handshake"></i></span>
+            <div><b>A partner, not a vendor</b><p>Plain-language advice and same-day replies from the people building your site.</p></div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ======================= CTA BANNER ======================= -->
+    <section class="container cta-wrap">
+      <div class="cta-banner reveal">
+        <span class="eyebrow" style="justify-content:center;display:inline-flex">Ready when you are</span>
+        <h2>Have a project in mind? Let's make it <em>real.</em></h2>
+        <p>Tell us where your business is going — we will show you the shortest path to get it online, found, and chosen.</p>
+        <a href="#contact" class="btn btn-primary">Start a project <i data-lucide="arrow-right"></i></a>
+      </div>
+    </section>
+
+    <!-- ======================= CONTACT ======================= -->
+    <section class="section" id="contact" style="background:var(--bg-soft);border-top:1px solid var(--line)">
+      <div class="container contact-grid">
+        <div class="contact-info reveal">
+          <span class="eyebrow">Contact</span>
+          <h2>Tell us about your <em style="font-family:var(--font-serif);font-style:italic;font-weight:400;color:var(--accent)">project.</em></h2>
+          <p>Share a few details and we will reply within one business day with next steps, a timeline and a fixed quote.</p>
+
+          <div class="info-item">
+            <span class="wi"><i data-lucide="mail"></i></span>
+            <div><small>Email</small><b>hello@fabuyo.dev</b></div>
+          </div>
+          <div class="info-item">
+            <span class="wi"><i data-lucide="clock-3"></i></span>
+            <div><small>Response time</small><b>Within 24 hours, Mon–Fri</b></div>
+          </div>
+          <div class="info-item">
+            <span class="wi"><i data-lucide="globe-2"></i></span>
+            <div><small>Availability</small><b>Remote-first · clients worldwide</b></div>
+          </div>
+        </div>
+
+        <!-- Lead capture form (validated in js/app.js, stored in Firestore "inquiries") -->
+        <div class="form-card reveal" style="--d:.1s">
+          <form id="contactForm" novalidate>
+            <div class="form-row">
+              <div class="field">
+                <label for="cf-name">Full name <i>*</i></label>
+                <input id="cf-name" name="name" type="text" placeholder="Ada Lovelace" autocomplete="name" />
+                <span class="error-text">Please enter your name.</span>
+              </div>
+              <div class="field">
+                <label for="cf-email">Email <i>*</i></label>
+                <input id="cf-email" name="email" type="email" placeholder="you@company.com" autocomplete="email" />
+                <span class="error-text">Please enter a valid email.</span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="cf-company">Company</label>
+                <input id="cf-company" name="company" type="text" placeholder="Company Ltd." autocomplete="organization" />
+                <span class="error-text"></span>
+              </div>
+              <div class="field">
+                <label for="cf-service">Service needed</label>
+                <select id="cf-service" name="service">
+                  <option value="Custom Web Development">Custom Web Development</option>
+                  <option value="Business Digitizing">Business Digitizing</option>
+                  <option value="Communication Integration">Communication Integration</option>
+                  <option value="SEO & Performance">SEO &amp; Performance</option>
+                  <option value="Not sure yet">Not sure yet</option>
+                </select>
+                <span class="error-text"></span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="cf-budget">Estimated budget</label>
+              <select id="cf-budget" name="budget">
+                <option value="< $1k">Under $1,000</option>
+                <option value="$1k – $3k">$1,000 – $3,000</option>
+                <option value="$3k – $10k" selected>$3,000 – $10,000</option>
+                <option value="$10k+">$10,000+</option>
+              </select>
+              <span class="error-text"></span>
+            </div>
+
+            <div class="field">
+              <label for="cf-message">Project details <i>*</i></label>
+              <textarea id="cf-message" name="message" placeholder="What does your business do, and what should your website achieve?"></textarea>
+              <span class="error-text">Tell us a little more (min. 10 characters).</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="cfSubmit" style="width:100%">
+              Send inquiry <i data-lucide="send"></i>
+            </button>
+            <p style="color:var(--faint);font-size:.78rem;margin-top:1rem;text-align:center;">
+              <i data-lucide="lock" style="width:12px;height:12px;vertical-align:-2px"></i>
+              Your details stay private. No spam, ever.
+            </p>
+          </form>
+
+          <!-- Success overlay -->
+          <div class="form-success" id="formSuccess" role="status">
+            <span class="ok"><i data-lucide="check"></i></span>
+            <h3>Message received</h3>
+            <p>Thank you — we will get back to you within 24 hours with a clear plan and honest pricing.</p>
+            <button type="button" id="cfAgain">Send another message</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================= FOOTER ======================= -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <a href="#top" class="brand">Fabuyo<span>.</span></a>
+          <p>A web development agency helping business owners get found, get chosen and get growing — online.</p>
+          <div class="f-social" style="margin-top:1.4rem">
+            <a class="icon-btn" href="#" aria-label="Fabuyo on X"><i data-lucide="twitter"></i></a>
+            <a class="icon-btn" href="#" aria-label="Fabuyo on LinkedIn"><i data-lucide="linkedin"></i></a>
+            <a class="icon-btn" href="#" aria-label="Fabuyo on Instagram"><i data-lucide="instagram"></i></a>
+            <a class="icon-btn" href="#" aria-label="Fabuyo on GitHub"><i data-lucide="github"></i></a>
+          </div>
+        </div>
+
+        <div class="f-col">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="#services">Custom Web Development</a></li>
+            <li><a href="#services">Business Digitizing</a></li>
+            <li><a href="#services">Communication Integration</a></li>
+            <li><a href="#services">SEO &amp; Performance</a></li>
+          </ul>
+        </div>
+
+        <div class="f-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#work">Selected work</a></li>
+            <li><a href="#process">Our process</a></li>
+            <li><a href="#why">Why Fabuyo</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="f-col">
+          <h4>Get started</h4>
+          <ul>
+            <li><a href="#contact">Request a quote</a></li>
+            <li><a href="mailto:hello@fabuyo.dev">hello@fabuyo.dev</a></li>
+            <li><a href="#top">Back to top</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="f-wordmark" aria-hidden="true">FABUYO</div>
+
+      <div class="footer-bottom">
+        <span>© <span id="year"></span> Fabuyo Studio. All rights reserved.</span>
+        <span>Crafted with precision, served at light speed.</span>
+        <a href="#top" class="to-top">Back to top <i data-lucide="arrow-up"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toasts -->
+  <div class="toast-wrap" id="toasts" aria-live="polite"></div>
+
+  <!-- Icons + public application logic -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

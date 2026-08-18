@@ -1,0 +1,122 @@
+# ==========================================================================
+# FABUYO — .gitignore
+# Static site (HTML/CSS/vanilla ES modules) + Firebase Hosting
+# --------------------------------------------------------------------------
+# IMPORTANT: js/firebase-config.js is intentionally NOT ignored.
+# Firebase *web* API keys are public identifiers, not secrets — every Firebase
+# web app ships one in its client bundle. Your real security boundary is
+# firestore.rules + Firebase Auth. Ignoring the config would break deploys,
+# since this project has no build step to inject environment variables.
+#
+# What IS dangerous: service-account / admin-SDK JSON keys. Those bypass all
+# security rules and grant full project access. They are ignored below.
+# ==========================================================================
+
+
+# ----- Secrets & credentials (NEVER commit) -------------------------------
+# Firebase Admin SDK service accounts — full backend access, bypasses rules
+*serviceAccount*.json
+*service-account*.json
+*-firebase-adminsdk-*.json
+firebase-adminsdk*.json
+*.pem
+*.key
+*.p12
+*.p8
+*.keystore
+*.jks
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+
+# ----- Firebase tooling ---------------------------------------------------
+.firebase/
+firebase-debug.log*
+firebase-debug.*.log*
+firestore-debug.log*
+database-debug.log*
+pubsub-debug.log*
+ui-debug.log*
+
+# Local Emulator Suite state / exported data
+.runtimeconfig.json
+firebase-export-*/
+emulator-data/
+
+# NOTE: keep these committed — they define your deploy target:
+#   firebase.json, .firebaserc, firestore.rules, storage.rules, firestore.indexes.json
+
+
+# ----- Node / tooling -----------------------------------------------------
+# (only present if you run `npx serve`, linters, or add tooling later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+.pnpm-store/
+.eslintcache
+.cache/
+.parcel-cache/
+.temp/
+tmp/
+
+
+# ----- Build / deploy output ----------------------------------------------
+dist/
+build/
+out/
+.vercel/
+.netlify/
+
+
+# ----- Editors & IDEs -----------------------------------------------------
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+.history/
+
+
+# ----- Operating system junk ----------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.AppleDouble
+.LSOverride
+Icon
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+
+# ----- Logs & local scratch files -----------------------------------------
+*.log
+logs/
+*.local
+scratch/
+TODO.local.md
+
+
+# ----- Media working files (keep the repo light) --------------------------
+# Source screenshots/mockups you compress before uploading to the CMS
+*.psd
+*.ai
+*.sketch
+*.fig
+*.xcf
+/assets/raw/
+/screenshots/raw/
