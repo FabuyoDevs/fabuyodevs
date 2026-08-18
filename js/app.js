@@ -423,19 +423,33 @@ addEventListener("scroll", () => header.classList.toggle("scrolled", scrollY > 1
 /* Mobile menu */
 const burger = document.getElementById("burger");
 const mobileMenu = document.getElementById("mobileMenu");
+const closeMobileMenu = () => {
+  mobileMenu.classList.remove("open");
+  burger.classList.remove("open");
+  burger.setAttribute("aria-expanded", "false");
+  burger.setAttribute("aria-label", "Open menu");
+  document.body.style.overflow = "";
+};
+
 burger.addEventListener("click", () => {
   const open = mobileMenu.classList.toggle("open");
   burger.classList.toggle("open", open);
   burger.setAttribute("aria-expanded", open);
+  burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
   document.body.style.overflow = open ? "hidden" : "";
 });
 mobileMenu.querySelectorAll("a").forEach((a) =>
-  a.addEventListener("click", () => {
-    mobileMenu.classList.remove("open");
-    burger.classList.remove("open");
-    document.body.style.overflow = "";
-  })
+  a.addEventListener("click", closeMobileMenu)
 );
+addEventListener("click", (e) => {
+  if (mobileMenu.classList.contains("open") &&
+      !mobileMenu.contains(e.target) && !burger.contains(e.target)) {
+    closeMobileMenu();
+  }
+});
+addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeMobileMenu();
+});
 
 /* Scrollspy for nav underline */
 const spyLinks = [...document.querySelectorAll(".nav-links a[href^='#']")];
