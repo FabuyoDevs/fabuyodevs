@@ -25,7 +25,7 @@ modules** — no build step, no frameworks.
 The public site contains **zero** links, buttons or references to the console.
 Access it only by typing the address directly:
 
-- `https://yourdomain.com/admin.html`, or
+- `https://yourdomain.com/admin`, or
 - `https://yourdomain.com/?page=admin` (instant redirect into the console)
 
 The dashboard never renders until `onAuthStateChanged` confirms a signed-in
@@ -111,7 +111,7 @@ Paste each file into the matching **Rules** tab in the Firebase console
 6. **Create databases**: Firestore Database → *Start in production mode*;
    Storage → *Get started*.
 7. **Publish rules**: paste `firestore.rules` and `storage.rules` (above).
-8. Done — visit `admin.html`, sign in, publish your first project.
+8. Done — visit `/admin`, sign in, publish your first project.
 
 > Until step 3 is done the **public** site runs in demo mode with sample
 > portfolio data, so nothing ever looks broken in front of a client.

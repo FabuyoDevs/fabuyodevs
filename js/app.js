@@ -2,7 +2,7 @@
  * ==========================================================================
  * FABUYO — Public Site Logic (index.html)
  * --------------------------------------------------------------------------
- *  - Hidden-route redirect (?page=admin → admin.html)
+ *  - Hidden-route redirect (?page=admin → /admin)
  *  - Live portfolio fetching from Cloud Firestore (with demo fallback)
  *  - Client-side search + category filtering
  *  - Lead-capture contact form with validation → Firestore "inquiries"
@@ -33,7 +33,7 @@ import {
  *    There are intentionally NO visible links to it anywhere in the UI.
  * -------------------------------------------------------------------------- */
 if (new URLSearchParams(window.location.search).get("page") === "admin") {
-  window.location.replace("admin.html");
+  window.location.replace("/admin");
 }
 
 /* --------------------------------------------------------------------------
