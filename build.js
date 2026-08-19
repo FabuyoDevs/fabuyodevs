@@ -2,23 +2,34 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const requiredVariables = {
-  apiKey: "FIREBASE_API_KEY",
-  authDomain: "FIREBASE_AUTH_DOMAIN",
-  projectId: "FIREBASE_PROJECT_ID",
-  storageBucket: "FIREBASE_STORAGE_BUCKET",
-  messagingSenderId: "FIREBASE_MESSAGING_SENDER_ID",
-  appId: "FIREBASE_APP_ID",
+  apiKey: ["FIREBASE_API_KEY", "apiKey"],
+  authDomain: ["FIREBASE_AUTH_DOMAIN", "authDomain"],
+  projectId: ["FIREBASE_PROJECT_ID", "projectId"],
+  storageBucket: ["FIREBASE_STORAGE_BUCKET", "storageBucket"],
+  messagingSenderId: ["FIREBASE_MESSAGING_SENDER_ID", "messagingSenderId"],
+  appId: ["FIREBASE_APP_ID", "appId"],
 };
 
-const missing = Object.values(requiredVariables).filter((name) => !process.env[name]);
-if (missing.length) {
-  throw new Error(`Missing Firebase build variables: ${missing.join(", ")}`);
+const getEnvironmentValue = (names) =>
+  names.map((name) => process.env[name]).find(Boolean);
+const missing = Object.values(requiredVariables)
+  .filter((names) => !getEnvironmentValue(names))
+  .map((names) => names[0]);
+const hasFirebaseConfig = missing.length === 0;
+
+if (!hasFirebaseConfig) {
+  console.warn(
+    `Firebase environment variables are not configured; building demo mode. Missing: ${missing.join(", ")}`
+  );
 }
 
 const config = Object.fromEntries(
-  Object.entries(requiredVariables).map(([key, name]) => [key, process.env[name]])
+  Object.entries(requiredVariables).map(([key, names]) => [
+    key,
+    getEnvironmentValue(names) || `PASTE_${names[0]}`,
+  ])
 );
-config.measurementId = process.env.FIREBASE_MEASUREMENT_ID || "";
+config.measurementId = process.env.FIREBASE_MEASUREMENT_ID || process.env.measurementId || "";
 
 const output = `import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
@@ -26,12 +37,18 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.5/firebas
 import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
 
 export const firebaseConfig = ${JSON.stringify(config, null, 2)};
-export const isFirebaseConfigured = true;
+export const isFirebaseConfigured = ${hasFirebaseConfig};
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
+let app = null;
+let auth = null;
+let db = null;
+let storage = null;
+if (isFirebaseConfigured) {
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+  storage = getStorage(app);
+}
 export { app, auth, db, storage };
 
 export const PROJECTS_COLLECTION = "projects";
