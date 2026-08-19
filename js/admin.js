@@ -280,6 +280,13 @@ function subscribeProjects() {
   state.unsubscribe = onSnapshot(
     q,
     (snap) => {
+      const legacyProjects = snap.docs.filter(
+        (project) => !Object.prototype.hasOwnProperty.call(project.data(), "published")
+      );
+      legacyProjects.forEach((project) => {
+        updateDoc(doc(db, PROJECTS_COLLECTION, project.id), { published: true })
+          .catch((err) => console.error("[Fabuyo Admin] Legacy project migration failed:", err));
+      });
       state.projects = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
       renderStats();
       renderTable();
@@ -652,6 +659,7 @@ projectForm.addEventListener("submit", async (e) => {
       description: projDesc.value.trim(),
       liveUrl: projUrl.value.trim(),
       imageUrl: projImage.value.trim(),
+      published: state.editingDraft?.published ?? true,
       updatedAt: serverTimestamp(),
     };
 
@@ -661,7 +669,6 @@ projectForm.addEventListener("submit", async (e) => {
     } else {
       await addDoc(collection(db, PROJECTS_COLLECTION), {
         ...payload,
-        published: state.editingDraft?.published ?? true,
         createdAt: serverTimestamp(),
       });
       toast("Project published to your live portfolio.", "success");
