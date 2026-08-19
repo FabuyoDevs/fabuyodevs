@@ -22,10 +22,8 @@ import {
   collection,
   getDocs,
   query,
-  orderBy,
   addDoc,
   serverTimestamp,
-  limit,
   where,
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
@@ -250,12 +248,13 @@ async function loadProjects() {
   try {
     const q = query(
       collection(db, PROJECTS_COLLECTION),
-      where("published", "==", true),
-      orderBy("createdAt", "desc"),
-      limit(48)
+      where("published", "==", true)
     );
     const snap = await getDocs(q);
-    state.projects = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    state.projects = snap.docs
+      .map((d) => ({ id: d.id, ...d.data() }))
+      .sort((a, b) => toMillis(b.createdAt) - toMillis(a.createdAt))
+      .slice(0, 48);
 
     // First-run convenience: seed the grid with demos if DB is empty
     if (!state.projects.length) {
